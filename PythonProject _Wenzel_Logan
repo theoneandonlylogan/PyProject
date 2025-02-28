@@ -1,0 +1,56 @@
+ax = sns.boxplot(x = "MEDV", data = boston_df)
+plt.title('Median value of owner-occupied homes')
+plt.xlabel('Median value of owner-occupied homes')
+plt.show()
+
+sns.set(style= "whitegrid")
+ax = sns.barplot(x = "CHAS", y = "MEDV", data= boston_df)
+plt.show()
+
+
+boston_df.loc[(boston_df['AGE'] <= 35), 'age_group'] = '35 years and younger'
+boston_df.loc[(boston_df['AGE'] > 35)&(boston_df['AGE']< 70), 'age_group'] = 'between 35 and 70'
+boston_df.loc[(boston_df['AGE'] >= 70), 'age_group'] = '70 years and older'
+
+ax = sns.boxplot(x = "age_group", y = "MEDV", data=boston_df)
+plt.show()
+
+
+ax = sns.scatterplot(x = 'NOX', y = 'INDUS', data=boston_df)
+plt.show()
+
+
+plt.hist(boston_df['PTRATIO'], bin=5, edgecolor = 'black')
+plt.show
+
+
+##task 3
+scipy.stats.ttest_ind(boston_df[boston_df['CHAS'] == '0'] ['MEDV']
+                   boston_df[boston_df['CHAS'] == '1'] ['MEDV'], equal_var = True)
+
+
+scipy.stats.levene(boston_df[ratings_df['age_group'] == '35 years and younger']['MEDV'],
+                   boston_df[ratings_df['age_group'] == 'between 35 and 70 years']['MEDV'], 
+                   boston_df[ratings_df['age_group'] == '70 years and older']['MEDV'], 
+                   center='mean')
+
+thirtyfive_lower = ratings_df[ratings_df['age_group'] == '35 years and younger']['MEDV']
+thirtyfive_seventy = ratings_df[ratings_df['age_group'] == 'between 35 and 70 years']['MEDV']
+seventy_older = ratings_df[ratings_df['age_group'] == '70 years and older']['MEDV']
+
+f_statistic, p_value = scipy.stats.f_oneway(thirtyfive_lower, thirtyfive_seventy, seventy_older)
+print("F_Statistic: {0}, P-Value: {1}".format(f_statistic,p_value))
+
+
+ax = sns.scatterplot(x="NOX", y="INDUS", data=boston_df)
+scipy.stats.pearsonr(ratings_df['NOX'], ratings_df['INDUS'])
+
+
+
+X = ratings_df['DIS']
+y = ratings_df['MEDV']
+X = sm.add_constant(X) 
+
+model = sm.OLS(y, X).fit()
+predictions = model.predict(X)
+model.summary()
